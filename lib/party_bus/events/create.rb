@@ -1,7 +1,7 @@
 module PartyBus
   module Events
     class Create < PartyBus::Base
-      def self.perform_using(resource_type, resource_action, payload)
+      def self.perform_using(resource_type:, resource_action:, payload:)
         new(resource_type, resource_action, payload).perform
       end
 
