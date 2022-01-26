@@ -9,7 +9,7 @@ TODO: Delete this and the text above, and describe your gem
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'party_bus'
+gem "party_bus", git: "git@github.com:arid-software/party-bus-ruby.git", branch: "post-events"
 ```
 
 And then execute:
@@ -22,7 +22,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Generate project initializer.
+
+    $ bin/rails generate party_bus <api key>
 
 ## Development
 
