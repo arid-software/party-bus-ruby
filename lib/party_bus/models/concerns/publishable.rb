@@ -17,7 +17,7 @@ module Publishable
       # after_do hook for other methods
       special_methods = methods.flatten.reject { |m| m.in?([:create, :update, :destroy]) }
       after special_methods do |method_name, *args, _return_val, instance|
-        puts PartyBus::Events::Create.perform_using(**instance.pb_serialize(method_name))
+        PartyBus::Events::Create.perform_using(**instance.pb_serialize(method_name))
       end
     end
 
