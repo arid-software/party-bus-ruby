@@ -26,9 +26,11 @@ module PartyBus
 
       def body
         {
-          resource_type: @resource_type,
-          resource_action: @resource_action,
-          payload: @payload
+          event: {
+            resource_type: @resource_type,
+            resource_action: @resource_action,
+            payload: @payload
+          }
         }
       end
     end
