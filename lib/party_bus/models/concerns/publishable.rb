@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "after_do"
+
 module Publishable
   extend ActiveSupport::Concern
 

@@ -1,8 +1,10 @@
+require "httparty"
+
 module PartyBus
   class Base
     include HTTParty
     default_timeout 10 # hard timeout after 10 seconds
-    
+
     def perform
       if response.success?
         {
