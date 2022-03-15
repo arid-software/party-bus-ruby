@@ -10,34 +10,33 @@ module Publishable
 
     def self.publish_on(*methods)
       # after_commit hook for active record methods
-      base_methods = methods.flatten.filter { |m| m.in?([:create, :update, :destroy]) }
-
-      if base_methods.any? && respond_to?(:after_commit)
-        after_commit :pb_log_object, on: base_methods
-      end
+      after_commit :pb_after_create, on: :create if methods.flatten.include?(:create)
+      after_commit :pb_after_update, on: :update if methods.flatten.include?(:update)
+      after_commit :pb_after_destroy, on: :destroy if methods.flatten.include?(:destroy)
 
       # after_do hook for other methods
       special_methods = methods.flatten.reject { |m| m.in?([:create, :update, :destroy]) }
       if special_methods.any?
         after special_methods do |method_name, *args, _return_val, instance|
-          PartyBus::Events::Create.perform_using(**instance.pb_serialize(method_name))
+          pb_create_event(**instance.pb_serialize(method_name))
         end
       end
     end
 
-    def pb_log_object(action = nil)
-      if respond_to?(:transaction_include_any_action?) && transaction_include_any_action?([:create])
-        PartyBus::Events::Create.perform_using(**instance.pb_serialize('create'))
-        puts pb_serialize("created", include_changes: false).inspect
-      elsif respond_to?(:transaction_include_any_action?) && transaction_include_any_action?([:update])
-        PartyBus::Events::Create.perform_using(**instance.pb_serialize('update'))
-        puts pb_serialize("updated").inspect
-      elsif respond_to?(:transaction_include_any_action?) && transaction_include_any_action?([:destroy])
-        PartyBus::Events::Create.perform_using(**instance.pb_serialize('destroy'))
-        puts pb_serialize("destroyed")
-      else
-        puts pb_serialize(action.to_s)
-      end
+    def pb_after_create
+      self.class.pb_create_event(**pb_serialize("created"))
+    end
+
+    def pb_after_update
+      self.class.pb_create_event(**pb_serialize("updated"))
+    end
+
+    def pb_after_destroy
+      self.class.pb_create_event(**pb_serialize("destroyed"))
+    end
+
+    def self.pb_create_event(attributes)
+      PartyBus::Events::Create.perform_using(**attributes)
     end
 
     # This method is overrideable in case the resource name in party bus differs
