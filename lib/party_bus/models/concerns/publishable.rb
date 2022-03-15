@@ -18,17 +18,22 @@ module Publishable
 
       # after_do hook for other methods
       special_methods = methods.flatten.reject { |m| m.in?([:create, :update, :destroy]) }
-      after special_methods do |method_name, *args, _return_val, instance|
-        PartyBus::Events::Create.perform_using(**instance.pb_serialize(method_name))
+      if special_methods.any?
+        after special_methods do |method_name, *args, _return_val, instance|
+          PartyBus::Events::Create.perform_using(**instance.pb_serialize(method_name))
+        end
       end
     end
 
     def pb_log_object(action = nil)
       if respond_to?(:transaction_include_any_action?) && transaction_include_any_action?([:create])
+        PartyBus::Events::Create.perform_using(**instance.pb_serialize('create'))
         puts pb_serialize("created", include_changes: false).inspect
       elsif respond_to?(:transaction_include_any_action?) && transaction_include_any_action?([:update])
+        PartyBus::Events::Create.perform_using(**instance.pb_serialize('update'))
         puts pb_serialize("updated").inspect
       elsif respond_to?(:transaction_include_any_action?) && transaction_include_any_action?([:destroy])
+        PartyBus::Events::Create.perform_using(**instance.pb_serialize('destroy'))
         puts pb_serialize("destroyed")
       else
         puts pb_serialize(action.to_s)
