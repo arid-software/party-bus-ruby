@@ -16,15 +16,23 @@ And then execute:
 
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install party_bus
-
 ## Usage
 
 Generate project initializer.
 
     $ bin/rails generate party_bus <api key>
+
+Add the helper to any object you would like to observe events. To add the helper to every model in your rails application.
+
+    class ApplicationRecord < ActiveRecord::Base
+      primary_abstract_class
+
+      include Publishable
+    end
+
+Control which methods file events with the `publish_on` class method.
+
+      publish_on [:create,  :my_method, :my_other_method]
 
 ## Development
 
