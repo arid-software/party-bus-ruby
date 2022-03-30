@@ -45,22 +45,11 @@ module Publishable
       self.class.to_s
     end
 
-    def pb_serialize(action = nil, include_changes: true)
-      payload = {}
-
-      if self.respond_to?(:attributes)
-        payload = self.attributes.deep_symbolize_keys.except(*pb_stripped_attrs)
-
-        if include_changes
-          changes = self.saved_changes.deep_symbolize_keys.except(*pb_stripped_attrs)
-
-          # Changes are in form of {attribute_name: [current_val, previous_val]}
-          changes = changes.transform_values { |val| {previous: val.first, current: val.second} }
-
-          payload = payload.merge(_changes: changes)
-        end
+    def pb_serialize(action = nil)
+      payload = if self.respond_to?(:attributes)
+        self.attributes.deep_symbolize_keys.except(*pb_stripped_attrs)
       else
-        payload = self.instance_values.deep_symbolize_keys.except(*pb_stripped_attrs).merge(_changes: {})
+        self.instance_values.deep_symbolize_keys.except(*pb_stripped_attrs)
       end
 
       {
@@ -84,6 +73,7 @@ module Publishable
 
     # These attributes are stripped by default
     def pb_default_stripped_attrs
+      # TODO: this shouldn't come from application config
       [
         :created_at,
         :updated_at,
