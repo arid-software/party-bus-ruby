@@ -47,37 +47,31 @@ module Publishable
 
     def pb_serialize(action = nil)
       payload = if self.respond_to?(:attributes)
-        self.attributes.deep_symbolize_keys.except(*pb_stripped_attrs)
+        self.attributes.deep_symbolize_keys.except(*pb_stripped_attributes)
       else
-        self.instance_values.deep_symbolize_keys.except(*pb_stripped_attrs)
+        self.instance_values.deep_symbolize_keys.except(*pb_stripped_attributes)
       end
 
       {
         payload: payload,
         resource_type: pb_resource_name,
-        resource_action: action
+        resource_action: action,
+        source_id: pb_source_id,
+        sub_entity_id: pb_sub_entity_id
       }
     end
 
-    # If we've defined #stripped_attrs on the class, pull that list in.
-    # Otherwise, just use the defaults.
-    #
-    # This method is overrideable.
-    def pb_stripped_attrs
-      if self.respond_to?(:stripped_attributes)
-        self.stripped_attributes.concat(pb_default_stripped_attrs)
-      else
-        pb_default_stripped_attrs
-      end
+    # These attributes are stripped by default
+    def pb_stripped_attributes
+      PartyBus.configuration.stripped_attributes
     end
 
-    # These attributes are stripped by default
-    def pb_default_stripped_attrs
-      # TODO: this shouldn't come from application config
-      [
-        :created_at,
-        :updated_at,
-      ].concat(Rails.application.config.filter_parameters)
+    def pb_source_id
+      PartyBus.configuration.source_id
+    end
+
+    def pb_sub_entity_id
+      PartyBus.configuration.sub_entity_id
     end
   end
 end
