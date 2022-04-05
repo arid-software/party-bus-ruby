@@ -6,6 +6,8 @@ module PartyBus
     default_timeout 10 # hard timeout after 10 seconds
 
     def perform
+      return { success: true } unless PartyBus.configuration.enabled
+
       if response.success?
         {
           success: true,
