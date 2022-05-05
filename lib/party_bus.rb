@@ -1,6 +1,7 @@
 require "rubygems"
 require "thread"
 
+require "active_model"
 require "active_support/concern"
 require "after_do"
 require "httparty"

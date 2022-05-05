@@ -13,7 +13,7 @@ module Publishable
       after_commit :pb_after_destroy, on: :destroy if methods.flatten.include?(:destroy)
 
       # after_do hook for other methods
-      special_methods = methods.flatten.reject { |m| m.in?([:create, :update, :destroy]) }
+      special_methods = methods.flatten.reject { |m| [:create, :update, :destroy].include?(m) }
       if special_methods.any?
         after special_methods do |method_name, *args, _return_val, instance|
           pb_create_event(**instance.pb_serialize(method_name))
@@ -45,17 +45,19 @@ module Publishable
 
     def pb_serialize(action = nil)
       payload = if self.respond_to?(:attributes)
-        self.attributes.deep_symbolize_keys.except(*pb_stripped_attributes)
+        self.attributes
       else
-        self.instance_values.deep_symbolize_keys.except(*pb_stripped_attributes)
+        self.instance_values
       end
+        .deep_symbolize_keys
+        .except(*pb_stripped_attributes)
 
       {
+        entity_id: entity_id,
         payload: payload,
         resource_type: pb_resource_name,
         resource_action: action,
         source_id: pb_source_id,
-        sub_entity_id: pb_sub_entity_id
       }
     end
 
@@ -64,12 +66,12 @@ module Publishable
       PartyBus.configuration.stripped_attributes
     end
 
-    def pb_source_id
-      PartyBus.configuration.source_id
+    def pb_entity_id
+      PartyBus.configuration.entity_id
     end
 
-    def pb_sub_entity_id
-      PartyBus.configuration.sub_entity_id
+    def pb_source_id
+      PartyBus.configuration.source_id
     end
   end
 end

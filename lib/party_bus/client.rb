@@ -1,6 +1,10 @@
 module PartyBus
   class Client
-    def self.post(entity_id: nil, path:, body:)
+    def self.post(
+      entity_id: PartyBus.configuration.entity_id,
+      path:,
+      body:
+    )
       return { success: true } unless PartyBus.configuration.enabled
 
       response = HTTParty.post(
