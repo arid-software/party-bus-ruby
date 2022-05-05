@@ -1,9 +1,12 @@
 require "rubygems"
 require "thread"
+
+require "active_support/concern"
+require "after_do"
 require "httparty"
 
 require "party_bus/version"
-require "party_bus/base"
+require "party_bus/client"
 require "party_bus/configuration"
 require "party_bus/events/create"
 require "party_bus/models/concerns/publishable"

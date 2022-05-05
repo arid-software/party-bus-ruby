@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{This is the gem for PartyBus.}
   spec.homepage      = "https://github.com/arid-software.com/party-bus-ruby"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.6.0")
 
   spec.metadata["allowed_push_host"] = "http://mygemserver.com"
 
@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency("after_do", '~> 0.4.0')
   spec.add_runtime_dependency("httparty", '~> 0.20.0')
+  spec.add_runtime_dependency("activesupport", ">= 6.0")
 end

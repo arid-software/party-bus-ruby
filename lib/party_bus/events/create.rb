@@ -1,41 +1,31 @@
 module PartyBus
   module Events
-    class Create < PartyBus::Base
-      def self.perform_using(payload:, resource_type:, resource_action:, source_id:, sub_entity_id:)
-        new(resource_type, resource_action, payload, source_id, sub_entity_id).perform
+    class Create
+      def self.perform_using(entity_id: nil, payload:, resource_type:, resource_action:, source_id:)
+        new(entity_id, resource_type, resource_action, payload, source_id).perform
       end
 
-      def initialize(resource_type, resource_action, payload, source_id, sub_entity_id)
+      def initialize(entity_id, resource_type, resource_action, payload, source_id)
+        @entity_id = entity_id
         @resource_type = resource_type
         @resource_action = resource_action
         @payload = payload
         @source_id = source_id
-        @sub_entity_id = sub_entity_id
       end
 
-      private
-
-      def response
-        @response ||= self.class.post(
-          url, body: body.to_json,
-          headers: headers
-        )
-      end
-
-      def url
-        base_url + '/events'
-      end
-
-      def body
-        {
-          event: {
-            payload: @payload,
-            resource_type: @resource_type,
-            resource_action: @resource_action,
-            source_id: @source_id,
-            sub_entity_id: @sub_entity_id
+      def perform
+        @response ||= PartyBus::Client.post(
+          entity_id: @entity_id,
+          path: '/api/v1/events',
+          body: {
+            event: {
+              payload: @payload,
+              resource_type: @resource_type,
+              resource_action: @resource_action,
+              source_id: @source_id
+            }
           }
-        }
+        )
       end
     end
   end
