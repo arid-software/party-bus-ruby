@@ -9,6 +9,12 @@ TODO: Delete this and the text above, and describe your gem
 Add this line to your application's Gemfile:
 
 ```ruby
+gem "party_bus"
+```
+
+To track the latest development version.
+
+```ruby
 gem "party_bus", git: "git@github.com:arid-software/party-bus-ruby.git", branch: "main"
 ```
 
