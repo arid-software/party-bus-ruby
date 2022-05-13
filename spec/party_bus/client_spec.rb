@@ -9,9 +9,9 @@ RSpec.describe PartyBus::Client do
           headers: {
             'Accept' => 'application/json',
             'Authorization' => "Bearer #{PartyBus.configuration.api_key}",
-            'Content-Type' => 'application/json',
-            'entity_id' => entity_id
-          }
+            'Content-Type' => 'application/json'
+          },
+          query: { entity_id: entity_id }
         )
         .to_return(
           body: '{}',

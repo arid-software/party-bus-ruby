@@ -11,7 +11,8 @@ module PartyBus
         "#{PartyBus.configuration.api_url}#{path}",
         body: body.to_json,
         default_timeout: 10,
-        headers: headers(entity_id)
+        headers: headers,
+        query: { entity_id: entity_id }
       )
 
       parse_response(response)
@@ -31,12 +32,11 @@ module PartyBus
       end
     end
 
-    def self.headers(entity_id)
+    def self.headers
       {
         'Accept': 'application/json',
         'Authorization': authorization,
-        'Content-Type': 'application/json',
-        'entity_id' => entity_id
+        'Content-Type': 'application/json'
       }
     end
 
