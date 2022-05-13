@@ -23,8 +23,8 @@ RSpec.describe PartyBus::Events::Create do
               source_id: attributes[:source_id]
             }
           },
-          headers: {
-            'entity_id' => attributes[:entity_id]
+          query: {
+            entity_id: attributes[:entity_id]
           }
         )
         .to_return(
