@@ -53,7 +53,7 @@ module Publishable
         .except(*pb_stripped_attributes)
 
       {
-        entity_id: entity_id,
+        entity_id: pb_entity_id,
         payload: payload,
         resource_type: pb_resource_name,
         resource_action: action,
