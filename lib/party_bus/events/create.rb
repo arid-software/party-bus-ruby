@@ -1,7 +1,13 @@
 module PartyBus
   module Events
     class Create
-      def self.perform_using(entity_id: nil, payload:, resource_type:, resource_action:, source_id:)
+      def self.perform_using(
+        entity_id: PartyBus.configuration.entity_id,
+        payload:,
+        resource_type:,
+        resource_action:,
+        source_id: PartyBus.configuration.source_id
+      )
         new(entity_id, resource_type, resource_action, payload, source_id).perform
       end
 
