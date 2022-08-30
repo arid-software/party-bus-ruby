@@ -1,8 +1,9 @@
 require "rubygems"
 require "thread"
 
-require "active_model"
-require "active_support/concern"
+require "active_record"
+# require "active_model"
+# require "active_support/concern"
 require "after_do"
 require "httparty"
 

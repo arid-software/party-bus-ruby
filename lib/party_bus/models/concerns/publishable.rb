@@ -34,7 +34,9 @@ module Publishable
     end
 
     def self.pb_create_event(attributes)
-      PartyBus::Events::Create.perform_using(**attributes)
+        PartyBus::Events::Create.perform_using(**attributes)
+    rescue
+      puts "PartyBus: Something went wrong"
     end
 
     # This method is overrideable in case the resource name in party bus differs

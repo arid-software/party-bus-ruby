@@ -1,20 +1,47 @@
 RSpec.describe Publishable do
+  let(:test_class) do
+    Class.new(ActiveRecord::Base) do
+      include Publishable
+
+      attr_accessor :foo, :bar
+
+      def self.name
+        "TestClass"
+      end
+
+      def hello
+        'say hi!'
+      end
+
+      publish_on [:hello]
+    end
+  end
+
   describe 'include' do
     it 'decorates methods' do
-      # test_class = Class.new do
-      #   include ActiveModel::Model
-      #   include Publishable
+      expected_request = stub_request(:post, 'https://party-bus.gigalixirapp.com/api/v1/events?entity_id=')
+        .to_return(status: 200, body: JSON.generate({ success: true }))
 
-      #   attr_accessor :foo, :bar
+      expect(test_class.new.hello).to eq('say hi!')
+      expect(expected_request).to have_been_requested
+    end
 
-      #   def hello
-      #     'say hi!'
-      #   end
+    it 'gracefully handles a request failure' do
+      expected_request = stub_request(:post, 'https://party-bus.gigalixirapp.com/api/v1/events?entity_id=')
+        .to_return(status: 500)
 
-      #   publish_on [:hello]
-      # end
+      expect(test_class.new.hello).to eq('say hi!')
+      expect(expected_request).to have_been_requested
+    end
 
-      # expect(test_class.new.hello).to eq('say hi!')
+    it 'gracefully handles an exception' do
+      expected_request = stub_request(:post, 'https://party-bus.gigalixirapp.com/api/v1/events?entity_id=')
+
+      expect(PartyBus::Events::Create).to receive(:perform_using)
+        .and_raise(StandardError)
+
+      expect(test_class.new.hello).to eq('say hi!')
+      expect(expected_request).to_not have_been_requested
     end
   end
 end
