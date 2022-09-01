@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    party_bus (0.1.13)
-      activerecord (>= 6.0)
+    party_bus (0.1.14)
+      activerecord (>= 6.0, <= 8.0)
       after_do (~> 0.4.0)
       httparty (~> 0.20.0)
 
