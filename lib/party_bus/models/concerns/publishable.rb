@@ -42,7 +42,7 @@ module Publishable
     # This method is overrideable in case the resource name in party bus differs
     # from the model name. By default we just use the model name.
     def pb_resource_name
-      self.class.to_s.snakecase
+      self.class.to_s.underscore
     end
 
     def pb_serialize(action = nil)
