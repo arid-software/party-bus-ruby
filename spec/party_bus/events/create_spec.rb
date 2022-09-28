@@ -1,31 +1,26 @@
 RSpec.describe PartyBus::Events::Create do
   describe "perform_using" do
     attributes = {
-      entity_id: SecureRandom.uuid,
+      connection_id: PartyBus.configuration.connection_id,
       resource_type: 'notification',
       resource_action: 'created',
       payload: {
         foo: :bar
       },
-      source_id: SecureRandom.uuid
     }
 
     it "makes a create event api call" do
-      stub_request(:post, "#{PartyBus.configuration.api_url}/api/v1/events")
+      stub_request(:post, "#{PartyBus.configuration.api_url}/api/v1/connections/#{PartyBus.configuration.connection_id}/events")
         .with(
           body: {
             event: {
-              resource_type: 'notification',
-              resource_action: 'created',
               payload: {
                 'foo' => 'bar'
               },
-              source_id: attributes[:source_id]
+              resource_action: 'created',
+              resource_type: 'notification'
             }
           },
-          query: {
-            entity_id: attributes[:entity_id]
-          }
         )
         .to_return(
           body: {

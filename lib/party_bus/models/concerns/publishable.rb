@@ -46,6 +46,15 @@ module Publishable
     end
 
     def pb_serialize(action = nil)
+      {
+        connection_id: pb_connection_id,
+        payload: pb_payload,
+        resource_type: pb_resource_name,
+        resource_action: action,
+      }
+    end
+
+    def pb_payload
       payload = if self.respond_to?(:attributes)
         self.attributes
       else
@@ -53,27 +62,15 @@ module Publishable
       end
         .deep_symbolize_keys
         .except(*pb_stripped_attributes)
+    end
 
-      {
-        entity_id: pb_entity_id,
-        payload: payload,
-        resource_type: pb_resource_name,
-        resource_action: action,
-        source_id: pb_source_id,
-      }
+    def pb_connection_id
+      PartyBus.configuration.connection_id
     end
 
     # These attributes are stripped by default
     def pb_stripped_attributes
       PartyBus.configuration.stripped_attributes
-    end
-
-    def pb_entity_id
-      PartyBus.configuration.entity_id
-    end
-
-    def pb_source_id
-      PartyBus.configuration.source_id
     end
   end
 end

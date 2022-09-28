@@ -1,16 +1,19 @@
 require 'rails/generators'
+
 class PartyBusGenerator < Rails::Generators::Base
   source_root File.expand_path('../templates', __FILE__)
 
-  argument :api_key, required: true, :desc => "required"
+  argument :connection_id, required: true, :desc => "required"
+  argument :secret, required: true, :desc => "required"
 
-  desc "Configures the bugsnag notifier with your API key"
+  desc "Configures the party-bus notifier with your application secret"
 
   def create_initializer_file
     initializer "party_bus.rb" do
       <<-EOF
 PartyBus.configure do |config|
-  config.api_key = #{api_key.inspect}
+  config.connection_id = #{connection_id.inspect}
+  config.secret = #{secret.inspect}
 end
       EOF
     end

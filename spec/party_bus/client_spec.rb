@@ -1,17 +1,13 @@
 RSpec.describe PartyBus::Client do
   describe "post" do
     it "performs a post request" do
-      entity_id = SecureRandom.uuid
-
       stub_request(:post, "#{PartyBus.configuration.api_url}/test")
         .with(
           body: "{}",
           headers: {
             'Accept' => 'application/json',
-            'Authorization' => "Bearer #{PartyBus.configuration.api_key}",
             'Content-Type' => 'application/json'
-          },
-          query: { entity_id: entity_id }
+          }
         )
         .to_return(
           body: '{}',
@@ -21,8 +17,8 @@ RSpec.describe PartyBus::Client do
         )
 
       response = described_class.post(
+        timestamp: Time.new(2020, 10, 31, 2, 2, 2),
         body: {},
-        entity_id: entity_id,
         path: '/test'
       )
 
@@ -31,15 +27,12 @@ RSpec.describe PartyBus::Client do
     end
 
     it "does not request when in test mode" do
-      entity_id = SecureRandom.uuid
-
       PartyBus.configure do |config|
         config.enabled = false
       end
 
       response = described_class.post(
         body: {},
-        entity_id: entity_id,
         path: '/test'
       )
 
