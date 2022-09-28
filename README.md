@@ -26,7 +26,7 @@ And then execute:
 
 Generate project initializer.
 
-    $ bin/rails generate party_bus <api key>
+    $ bin/rails generate party_bus <connection id> <connection secret>
 
 Add the helper to any object you would like to observe events. To add the helper to every model in your rails application.
 
