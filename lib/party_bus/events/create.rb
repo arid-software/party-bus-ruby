@@ -2,35 +2,34 @@ module PartyBus
   module Events
     class Create
       def self.perform_using(
-        entity_id: PartyBus.configuration.entity_id,
+        connection_id:,
         payload:,
-        resource_type:,
         resource_action:,
-        source_id: PartyBus.configuration.source_id
+        resource_type:,
+        timestamp: Time.now
       )
-        new(entity_id, resource_type, resource_action, payload, source_id).perform
+        new(connection_id, payload, resource_type, resource_action, timestamp).perform
       end
 
-      def initialize(entity_id, resource_type, resource_action, payload, source_id)
-        @entity_id = entity_id
+      def initialize(connection_id, payload, resource_type, resource_action, timestamp)
+        @connection_id = connection_id
         @resource_type = resource_type
         @resource_action = resource_action
         @payload = payload
-        @source_id = source_id
+        @timestamp = timestamp
       end
 
       def perform
         @response ||= PartyBus::Client.post(
-          entity_id: @entity_id,
-          path: '/api/v1/events',
           body: {
             event: {
               payload: @payload,
-              resource_type: @resource_type,
               resource_action: @resource_action,
-              source_id: @source_id
+              resource_type: @resource_type
             }
-          }
+          },
+          path: "/api/v1/connections/#{@connection_id}/events",
+          timestamp: @timestamp
         )
       end
     end

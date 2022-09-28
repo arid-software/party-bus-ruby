@@ -19,7 +19,7 @@ RSpec.describe Publishable do
 
   describe 'include' do
     it 'decorates methods' do
-      expected_request = stub_request(:post, 'https://party-bus.gigalixirapp.com/api/v1/events?entity_id=')
+      expected_request = stub_request(:post, "https://party-bus.gigalixirapp.com/api/v1/connections/#{PartyBus.configuration.connection_id}/events")
         .to_return(status: 200, body: JSON.generate({ success: true }))
 
       expect(test_class.new.hello).to eq('say hi!')
@@ -27,7 +27,7 @@ RSpec.describe Publishable do
     end
 
     it 'gracefully handles a request failure' do
-      expected_request = stub_request(:post, 'https://party-bus.gigalixirapp.com/api/v1/events?entity_id=')
+      expected_request = stub_request(:post, "https://party-bus.gigalixirapp.com/api/v1/connections/#{PartyBus.configuration.connection_id}/events")
         .to_return(status: 500)
 
       expect(test_class.new.hello).to eq('say hi!')
@@ -35,7 +35,7 @@ RSpec.describe Publishable do
     end
 
     it 'gracefully handles an exception' do
-      expected_request = stub_request(:post, 'https://party-bus.gigalixirapp.com/api/v1/events?entity_id=')
+      expected_request = stub_request(:post, "https://party-bus.gigalixirapp.com/api/v1/connections/#{PartyBus.configuration.connection_id}/events")
 
       expect(PartyBus::Events::Create).to receive(:perform_using)
         .and_raise(StandardError)

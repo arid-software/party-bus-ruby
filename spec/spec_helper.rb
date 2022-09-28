@@ -17,7 +17,8 @@ ActiveRecord::Base.establish_connection(:test)
 ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 PartyBus.configure do |config|
-  config.api_key = 'SFMyNTY.g2gDbQAAACCCkOxgJdqW7C9yes6O5nKzZ8GeV21Q4ZWMrvDxKkCSl24GAH5iyWGAAWIB4TOA.iQU9SWS9rH-JAUZ1HbZrWDgE0DNO9soHdJl-UuHMO_M'
+  config.connection_id = 'b3346fda-bd83-4cd9-8bd8-bb776afae7c0'
+  config.secret = '63d0ca21-805c-47f7-b765-f373a34286ab'
   config.enabled = true
 end
 

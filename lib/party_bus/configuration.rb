@@ -1,18 +1,16 @@
 module PartyBus
   class Configuration
-    attr_accessor :api_key
     attr_accessor :api_url
+    attr_accessor :connection_id
     attr_accessor :enabled
-    attr_accessor :entity_id
-    attr_accessor :source_id
+    attr_accessor :secret
     attr_accessor :stripped_attributes
 
     def initialize
-      self.api_key = nil
       self.api_url = "https://party-bus.gigalixirapp.com"
+      self.connection_id = nil
       self.enabled = ENV['RUBY_ENV'] != 'test' && ENV['RAILS_ENV'] != 'test'
-      self.entity_id = nil
-      self.source_id = nil
+      self.secret = nil
       self.stripped_attributes = []
     end
   end
