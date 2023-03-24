@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    party_bus (0.2.0)
+    party_bus (0.3.0)
       activerecord (>= 6.0, <= 8.0)
       after_do (~> 0.4.0)
       httparty (~> 0.20.0)
@@ -37,7 +37,7 @@ GEM
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
-    minitest (5.16.2)
+    minitest (5.16.3)
     multi_xml (0.6.0)
     pg (1.4.3)
     public_suffix (4.0.7)

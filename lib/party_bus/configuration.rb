@@ -7,7 +7,7 @@ module PartyBus
     attr_accessor :stripped_attributes
 
     def initialize
-      self.api_url = "https://party-bus.gigalixirapp.com"
+      self.api_url = "https://partybus-api.aridsoftware.com"
       self.connection_id = nil
       self.enabled = ENV['RUBY_ENV'] != 'test' && ENV['RAILS_ENV'] != 'test'
       self.secret = nil
