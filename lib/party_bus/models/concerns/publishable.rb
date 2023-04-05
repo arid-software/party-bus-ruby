@@ -49,8 +49,7 @@ module Publishable
       {
         connection_id: pb_connection_id,
         payload: pb_payload,
-        resource_type: pb_resource_name,
-        resource_action: action,
+        topic: "#{pb_resource_name}.#{action}"
       }
     end
 

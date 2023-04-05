@@ -4,17 +4,15 @@ module PartyBus
       def self.perform_using(
         connection_id:,
         payload:,
-        resource_action:,
-        resource_type:,
-        timestamp: Time.now
+        timestamp: Time.now,
+        topic:
       )
-        new(connection_id, payload, resource_type, resource_action, timestamp).perform
+        new(connection_id, payload, topic, timestamp).perform
       end
 
-      def initialize(connection_id, payload, resource_type, resource_action, timestamp)
+      def initialize(connection_id, payload, topic, timestamp)
         @connection_id = connection_id
-        @resource_type = resource_type
-        @resource_action = resource_action
+        @topic = topic
         @payload = payload
         @timestamp = timestamp
       end
@@ -24,8 +22,7 @@ module PartyBus
           body: {
             event: {
               payload: @payload,
-              resource_action: @resource_action,
-              resource_type: @resource_type
+              topic: @topic,
             }
           },
           path: "/api/v1/connections/#{@connection_id}/events",

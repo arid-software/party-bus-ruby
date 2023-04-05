@@ -2,8 +2,7 @@ RSpec.describe PartyBus::Events::Create do
   describe "perform_using" do
     attributes = {
       connection_id: PartyBus.configuration.connection_id,
-      resource_type: 'notification',
-      resource_action: 'created',
+      topic: 'notification.created',
       payload: {
         foo: :bar
       },
@@ -17,8 +16,7 @@ RSpec.describe PartyBus::Events::Create do
               payload: {
                 'foo' => 'bar'
               },
-              resource_action: 'created',
-              resource_type: 'notification'
+              topic: 'notification.created'
             }
           },
         )
