@@ -2,7 +2,7 @@ module PartyBus
   module Events
     class Create
       def self.perform_using(
-        connection_id:,
+        connection_id: PartyBus.configuration.connection_id,
         payload:,
         timestamp: Time.now,
         topic:
