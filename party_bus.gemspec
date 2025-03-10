@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency("after_do", '~> 0.4.0')
-  spec.add_runtime_dependency("httparty", '~> 0.20.0')
+  spec.add_runtime_dependency("httparty", '>= 0.20.0', '<= 0.22')
   spec.add_runtime_dependency("activerecord", ">= 5.0", "<= 8.0")
   # spec.add_runtime_dependency("activemodel", ">= 6.0")
   # spec.add_runtime_dependency("activesupport", ">= 6.0")
